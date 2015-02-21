@@ -1,0 +1,105 @@
+# depslib dependency file v1.0
+1418077254 source:c:\mmc12\glcddriver.c
+	"glcddriver.h"
+
+1418025993 c:\mmc12\glcddriver.h
+	<mcs51/8051.h>
+	<at89c51ed2.h>
+	<stdio.h>
+	<stdlib.h>
+	<mcs51/8052.h>
+	<string.h>
+
+1418084012 source:c:\mmc12\main.c
+	<mcs51/8051.h>
+	<at89c51ed2.h>
+	<stdio.h>
+	<stdlib.h>
+	<mcs51/8052.h>
+	<string.h>
+	"serialinit.h"
+	"sdcdriver.h"
+	"integer.h"
+	"glcddriver.h"
+
+1416543520 c:\mmc12\serialinit.h
+
+1418083192 c:\mmc12\sdcdriver.h
+	<mcs51/8051.h>
+	<at89c51ed2.h>
+	<stdio.h>
+	<stdlib.h>
+	<mcs51/8052.h>
+	<string.h>
+	<malloc.h>
+	"serialinit.h"
+	"integer.h"
+
+1417551720 c:\mmc12\integer.h
+	<windows.h>
+	<tchar.h>
+
+1418084607 source:c:\mmc12\sdcdriver.c
+	"sdcdriver.h"
+	"glcddriver.h"
+
+1416543482 source:c:\mmc12\serialinit.c
+	<mcs51/8051.h>
+	<at89c51ed2.h>
+	<mcs51reg.h>
+	<stdio.h>
+	<string.h>
+	"serialinit.h"
+
+1418077254 source:c:\mmc12_new\glcddriver.c
+	"glcddriver.h"
+
+1418458357 c:\mmc12_new\glcddriver.h
+	<mcs51/8051.h>
+	<at89c51ed2.h>
+	<stdio.h>
+	<stdlib.h>
+	<mcs51/8052.h>
+	<string.h>
+
+1416543482 source:c:\mmc12_new\serialinit.c
+	<mcs51/8051.h>
+	<at89c51ed2.h>
+	<mcs51reg.h>
+	<stdio.h>
+	<string.h>
+	"serialinit.h"
+
+1416543520 c:\mmc12_new\serialinit.h
+
+1418456140 source:c:\mmc12_new\main.c
+	<mcs51/8051.h>
+	<at89c51ed2.h>
+	<stdio.h>
+	<stdlib.h>
+	<mcs51/8052.h>
+	<string.h>
+	"serialinit.h"
+	"sdcdriver.h"
+	"integer.h"
+	"glcddriver.h"
+
+1418458322 c:\mmc12_new\sdcdriver.h
+	<mcs51/8051.h>
+	<at89c51ed2.h>
+	<stdio.h>
+	<stdlib.h>
+	<mcs51/8052.h>
+	<string.h>
+	<malloc.h>
+	"serialinit.h"
+	"integer.h"
+
+1417551720 c:\mmc12_new\integer.h
+	<windows.h>
+	<tchar.h>
+
+1418457817 source:c:\mmc12_new\sdcdriver.c
+	"sdcdriver.h"
+	"glcddriver.h"
+

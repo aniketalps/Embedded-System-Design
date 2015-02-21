@@ -1,0 +1,348 @@
+/*
+  Program:     MMC Interface
+
+  Description: MMC interfacing with 8051
+
+  Author:      Aniket Kumar
+
+  Date:        11/26/2014
+ */
+
+#include <mcs51/8051.h>
+#include <at89c51ed2.h>  //also includes 8052.h and 8051.h
+#include <stdio.h>
+#include <stdlib.h>
+#include <mcs51/8052.h>
+#include <string.h>
+#include "serialinit.h"
+#include "sdcdriver.h"
+#include "integer.h"
+//#include "glcddriver.h"
+//#include "filedriver.h"
+//#include "lcd_display.h"
+
+
+__sfr __at (0xC3) SPCON   ;
+__sfr __at (0xC4) SPSTA   ;
+__sfr __at (0xC5) SPDAT   ;
+
+_sdcc_external_startup()
+{
+    AUXR &= 0xFD;
+    AUXR |= 0xC0;
+    return 1;
+}
+
+void int_SPI(void) __interrupt (9);
+void spi_init();
+char fetch_data();
+
+typedef union
+{
+    BYTE b[4];
+    ULONG ul;
+} b_ul;
+//void lcd_disp();
+
+extern char serial_data;
+extern xdata BYTE *databuff;
+extern bit transmit_completed;
+
+void main()
+{
+    int i,ct;
+    char op,s1,s2,databyte;
+    xdata b_ul ch,ch1,ch2,ch3,ch4,ch5;
+    ULONG ch_int,s1_int,s2_int;
+
+
+    spi_init();
+    serinit();
+    //glcd_init();
+    //CE=1;
+    //WR=1;
+    EA=1;
+
+    sd_init();
+
+    while(1)
+    {
+
+    printf_tiny("------------------------------------------------------------\n\r");
+    printf_tiny("------------------------------------------------------------\n\r");
+    printf_tiny("---------------MEMORY CARD READER APPLICATION----------------\n\r");
+    printf_tiny("\n\rSelect an option:\n\r");
+    printf_tiny("1 - Memory Card details\n\r");
+    printf_tiny("2 - Memory Card Read\n\r");
+    printf_tiny("3 - Sector Fill - Memory Card Write\n\r");
+    printf_tiny("4 - File Read\n\r");
+    printf_tiny("5 - Hex Dump of sector\n\r");
+    printf_tiny("6 - Copy data bytes between sectors\n\r");
+    printf_tiny("7 - GAME : TIC-TAC-TOE\n\r");
+
+    op = getchar();
+
+    switch(op)
+    {
+    case '1':
+        {
+           break;
+        }
+
+    case '2':
+        {
+        printf_tiny("Enter sector number (4 bytes) to read from: \n\r");
+        ch.b[3] = fetch_data();
+        ch.b[2] = fetch_data();
+        ch.b[1] = fetch_data();
+        ch.b[0] = fetch_data();
+
+        sd_single_read(ch.ul);
+        hex_dump(ch.ul,512);
+        break;
+        }
+    case '3':
+        {
+        printf_tiny("Enter sector number to be written to memory card: \n\r");
+        ch1.b[3] = fetch_data();
+        ch1.b[2] = fetch_data();
+        ch1.b[1] = fetch_data();
+        ch1.b[0] = fetch_data();
+
+        printf_tiny("Enter data to be written to memory card: \n\r");
+        databyte = getchar();
+        sd_single_write(databyte,ch1.ul);
+        sd_single_read(ch1.ul);
+        hex_dump(ch1.ul,512);
+        break;
+        }
+    case '5':
+        {
+        printf_tiny("Enter start sector address\n\r");
+        ch2.b[3] = fetch_data();
+        ch2.b[2] = fetch_data();
+        ch2.b[1] = fetch_data();
+        ch2.b[0] = fetch_data();
+
+        printf_tiny("Enter end sector address\n\r");
+        ch3.b[3] = fetch_data();
+        ch3.b[2] = fetch_data();
+        ch3.b[1] = fetch_data();
+        ch3.b[0] = fetch_data();
+
+        sd_multiple_read(ch2.ul,ch3.ul);
+        break;
+        }
+    case '4':
+        {
+        fileopen();
+        break;
+        }
+
+    case '6':
+        {
+         printf_tiny("\n\rEnter source sector address:\n\r");
+         ch4.b[3] = fetch_data();
+         ch4.b[2] = fetch_data();
+         ch4.b[1] = fetch_data();
+         ch4.b[0] = fetch_data();
+
+         printf_tiny("\n\rEnter destination sector address:\n\r");
+         ch5.b[3] = fetch_data();
+         ch5.b[2] = fetch_data();
+         ch5.b[1] = fetch_data();
+         ch5.b[0] = fetch_data();
+
+         printf_tiny("\n\rCopying data...:\n\r");
+         sd_copy(ch4.ul,ch5.ul);
+         break;
+
+        }
+    case 7:
+        {
+
+        }
+
+    }
+
+    //printf_tiny("Enter data to be written to memory card: \n\r");
+    //gets(databuff);
+
+    //sd_single_write(databuff,sector);
+    //sd_single_read(buff,sector);
+    //hex_dump(sector);
+
+
+    //lcd_disp();
+    }
+}
+
+
+void int_SPI(void) __interrupt (9) /* interrupt address is 0x004B */
+{
+	switch	(SPSTA)         /* read and clear spi status register */
+	{
+		case 0x80:
+         serial_data=SPDAT;   /* read receive data */
+         transmit_completed=1;/* set software flag */
+         //printf_tiny("In INT 9...\n\r");
+         delay(100);
+ 		break;
+
+		case 0x10:
+         /* put here for mode fault tasking */
+         printf_tiny("Mode fault\n\r");
+		break;
+
+		case 0x40:
+         /* put here for overrun tasking */
+         printf_tiny("Overrun tasking\n\r");
+		break;
+	}
+}
+
+void spi_init()
+{
+    SPCON &= 0x00;                /* Fclk Periph/2 */
+    SPCON |= 0x10;                /* Master mode */
+    IEN1 |= 0x04;                 /* enable spi interrupt */
+}
+
+char fetch_data()
+{
+    int i1,i;
+    char ch;
+    char finalval;
+    char bufsiz1[2];
+
+     do
+        {
+        memset(bufsiz1,'\0',2);
+
+        for(i1=0;i1<2;i1++)
+        {
+           ch = getchar();
+           if(((ch > 47) && (ch < 59)) || ((ch > 96) && (ch < 103)) || ((ch > 64) && (ch < 71)))
+           {
+               bufsiz1[i1] = ch;
+           }
+           else if(!(((ch > 47) && (ch < 59)) || ((ch > 96) && (ch < 103)) || ((ch > 64) && (ch < 71))))
+           {
+               printf_tiny("\n\rPlease enter hexadecimal input. Special characters are not allowed.\n\r");
+               break;
+           }
+
+        }
+    }while(i1<2);
+
+    finalval=0;
+
+    // Convert ascii string to hex number
+    for(i=0;i<2;i++)
+    {
+
+        if((bufsiz1[i] >= '0') && (bufsiz1[i] <= '9'))
+        {
+            bufsiz1[i] -= 48;
+            if(i==0)
+            {
+                finalval += (bufsiz1[i]*16);
+            }
+            else if(i==1)
+            {
+                finalval += bufsiz1[i];
+            }
+
+        }
+
+
+        else if((bufsiz1[i] >= 'A') && (bufsiz1[i] <= 'F'))
+            {
+            switch(bufsiz1[i])
+            {
+            case 'A':
+                if(i==0)
+                    finalval += (10*16);
+                else if(i==1)
+                    finalval += 10;
+                break;
+            case 'B':
+                if(i==0)
+                    finalval += (11*16);
+                else if(i==1)
+                    finalval += 11;
+                break;
+            case 'C':
+                if(i==0)
+                    finalval += (12*16);
+                else if(i==1)
+                    finalval += 12;
+                break;
+            case 'D':
+                if(i==0)
+                    finalval += (13*16);
+                else if(i==1)
+                    finalval += 13;
+                break;
+            case 'E':
+                if(i==0)
+                    finalval += (14*16);
+                else if(i==1)
+                    finalval += 14;
+                break;
+            case 'F':
+                if(i==0)
+                    finalval += (15*16);
+                else if(i==1)
+                    finalval += 15;
+                break;
+            }
+            }
+
+        else if((bufsiz1[i] >= 'a') && (bufsiz1[i] <= 'f'))
+            {
+            switch(bufsiz1[i])
+            {
+             case 'a':
+                if(i==0)
+                    finalval += (10*16);
+                else if(i==1)
+                    finalval += 10;
+                break;
+            case 'b':
+                if(i==0)
+                    finalval += (11*16);
+                else if(i==1)
+                    finalval += 11;
+                break;
+            case 'c':
+                if(i==0)
+                    finalval += (12*16);
+                else if(i==1)
+                    finalval += 12;
+                break;
+            case 'd':
+                if(i==0)
+                    finalval += (13*16);
+                else if(i==1)
+                    finalval += 13;
+                break;
+            case 'e':
+                if(i==0)
+                    finalval += (14*16);
+                else if(i==1)
+                    finalval += 14;
+                break;
+            case 'f':
+                if(i==0)
+                    finalval += (15*16);
+                else if(i==1)
+                    finalval += 15;
+                break;
+            }
+
+            }
+
+    }
+    return finalval;
+}

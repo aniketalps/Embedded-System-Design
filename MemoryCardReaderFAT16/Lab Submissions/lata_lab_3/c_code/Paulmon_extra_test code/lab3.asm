@@ -1,0 +1,16 @@
+	ORG $2013
+	LJMP 14EFh           
+	RET
+	
+	ORG $5000
+	SETB P1.0
+	MOV DPTR,#0000h
+up:	MOV A,#'U'
+	MOVX @DPTR,A
+	INC DPTR
+	MOV A,DPH
+	CJNE A,#90h,up
+	MOV A,DPL
+	CJNE A,#00h,up
+	CLR P1.0
+	END

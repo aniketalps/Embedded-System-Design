@@ -1,0 +1,63 @@
+DUNFIELD 8051 ASSEMBLER: morse                                        PAGE: 1
+
+0000                         1  	ORG  $0000
+0000  02 10 00               2  	LJMP INIT			Jump to main program
+000B                         3          ORG $000b			ISR address for Timer 0
+000B  D2 91                  4  	SETB P1.1			Set P1.0 at the start of ISR
+000D  BA 00 03               5  	CJNE R2,#00h,i2			Check for dash or dot - 0:Dot, 1:Dash
+0010  02 20 00               6  	LJMP ISR			Jump to Dot ISR
+0013  02 21 00               7  i2:	LJMP ISR1			Jump to Dash ISR
+0016                         8  
+1000                         9          ORG $1000			Main program starts
+1000  75 A8 82              10  INIT:   MOV IE,#82h			Enable global interrupts and timer 0 interrupt
+1003  7A 00                 11  	MOV R2,#00h                     Flag for dot or dash    
+1005  7B 3C                 12  	MOV R3,#3Ch			counter for 600ms
+1007  78 16                 13  	MOV R0,#16h			counter for 217ms
+1009  7C 00                 14  	MOV R4,#00h			Counter for number of dots elapsed
+100B  75 8C DC              15  	MOV TH0,#0DCh			Load Timer 0 with 16 bit value to delay for 10ms
+100E  75 8A 1A              16  	MOV TL0,#01Ah			
+1011  75 89 01              17  	MOV TMOD,#01h			Select Timer 0 Mode 0
+1014  79 06                 18  loop:	MOV R1,#06h			Counter for six pulses
+1016  D2 90                 19  	SETB P1.0			Initialise P1.0
+1018  D2 8C                 20  up:	SETB TCON.4			Start Timer 0
+101A  E9                    21  	MOV A,R1			Move R1 to acc
+101B  70 FB                 22  	JNZ up				Check if six pulses elapsed
+101D  BA 00 01              23  	CJNE R2,#00h,l0			Check for dot 
+1020  0C                    24  	INC R4				Increment dot counter if dot is present
+1021  BC 02 06              25  l0:	CJNE R4,#02h,l1			Check for dash
+1024  7C 00                 26  	MOV R4,#00h			Reset counter for number of dots
+1026  7A 00                 27  	MOV R2,#00h			reset counter for dot/dash
+1028  80 04                 28  	SJMP l2				Jump to l2
+102A  EA                    29  l1:	MOV A,R2			Complement the dot/dash flag
+102B  64 01                 30  	XRL A,#01h			
+102D  FA                    31  	MOV R2,A
+102E  80 E4                 32  l2:	SJMP loop			Loop for SOS dot code
+1030                        33  	
+2000                        34          ORG $2000			Service routine for Timer 0 Mode 0
+2000  75 8C DC              35  ISR:	MOV TH0,#0DCh			Reload Timer 0 with 16 bit value to delay for 10ms
+2003  75 8A 1A              36  	MOV TL0,#01Ah
+2006  D8 0B                 37  	DJNZ R0,down			Check if 217ms have elapsed
+2008  90 01 00              38  	MOV DPTR,#0100h
+200B  74 49                 39  	MOV A,#49h         		B6h for common cathode, 49h for common anode
+200D  F0                    40  	MOVX @DPTR,A			Move data to external memory
+200E  19                    41  	DEC R1				Decrement counter for six pulses
+200F  B2 90                 42  	CPL P1.0			If 217ms elapsed, complement port bit P1.0
+2011  78 16                 43  	MOV R0,#16h			Reset counter for 217ms delay
+2013  C2 91                 44  down:   CLR P1.1			Clear port bit P1.1 once service routine is serviced
+2015  32                    45  	RETI				Clear interrupt flags and return to main program
+2016                        46  
+2100                        47  	ORG $2100			Loop for SOS dash code
+2100  75 8C DB              48  ISR1:	MOV TH0,#0DBh			Service routine for Timer 0 Mode 0
+2103  75 8A FF              49  	MOV TL0,#0FFh
+2106  DB 0B                 50  	DJNZ R3,d2			Check if 600ms have elapsed
+2108  90 01 00              51  	MOV DPTR,#0100h
+210B  74 03                 52  	MOV A,#03h	   		FCh for common cathode, 03h for common anode
+210D  F0                    53  	MOVX @DPTR,A			Move data to external memory
+210E  19                    54  	DEC R1				Decrement counter for six pulses
+210F  B2 90                 55  	CPL P1.0			If 600ms elapsed, complement port bit P1.0
+2111  7B 3C                 56  	MOV R3,#3Ch			Reset counter for 600ms delay
+2113  C2 91                 57  d2:     CLR P1.1			Clear port bit P1.1 once service routine is serviced
+2115  32                    58  	RETI				Clear interrupt flags and return to main program
+DUNFIELD 8051 ASSEMBLER: morse                                        PAGE: 2
+
+2116                        59  END

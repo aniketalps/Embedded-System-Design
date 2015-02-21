@@ -1,0 +1,22 @@
+ASxxxx Assembler V01.70 + NoICE + SDCC mods + Flat24 Feb-1999  (Intel 8051), page 1.
+
+
+
+                              1 .globl _asm_func_PARM_2
+                              2 .globl _asm_func
+                              3 .globl _abc
+                              4 
+                              5 .area OSEG
+   0000                       6 _asm_func_PARM_2:
+   0000                       7 .ds 1
+                              8 
+                              9 .area CSEG
+   0000                      10 _asm_func:
+   0000 C0 82                11 push dpl
+   0002 12 00 00             12 lcall _abc
+   0005 D0 82                13 pop dpl
+   0007 E5 82                14 mov a,dpl
+   0009 25 00                15 add a,_asm_func_PARM_2
+   000B F5 82                16 mov dpl,a
+   000D 75 83 00             17 mov dph,#0x00
+   0010 22                   18 ret

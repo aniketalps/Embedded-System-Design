@@ -1,0 +1,17 @@
+DUNFIELD 8051 ASSEMBLER: lab3                                         PAGE: 1
+
+2013                         1  	ORG $2013
+2013  02 14 EF               2  	LJMP 14EFh           
+2016  22                     3  	RET
+2017                         4  	
+5000                         5  	ORG $5000
+5000  D2 90                  6  	SETB P1.0
+5002  90 00 00               7  	MOV DPTR,#0000h
+5005  74 55                  8  up:	MOV A,#'U'
+5007  F0                     9  	MOVX @DPTR,A
+5008  A3                    10  	INC DPTR
+5009  E5 83                 11  	MOV A,DPH
+500B  B4 90 F7              12  	CJNE A,#90h,up
+500E  E5 82                 13  	MOV A,DPL
+5010  B4 00 F2              14  	CJNE A,#00h,up
+5013  C2 90                 15  	CLR P1.0
