@@ -1,0 +1,43 @@
+Name     ATF16V8C;
+PartNo   ESD001;
+Date     01-09-2014;
+Revision 01;
+Designer Engineer;
+Company  ALPS;
+Assembly None;
+Location Boulder;
+Device   virtual;
+
+/****************************************************************/
+/*                                                              */
+/*      This is a example to demonstrate how CUPL               */
+/*      compiles simple gates.                                  */
+/*                                                              */
+/****************************************************************/
+/*
+* Order:  define order, polarity, and output
+* spacing of stimulus and response values
+*/
+
+ORDER: A15..A12, %2, RD, %4, PSEN, %4, READ, %6, CSPERIPH, %6; 
+
+/*
+ * Vectors:  define stimulus and response values, with header
+ *           and intermediate messages for the simulator listing.
+ *
+ * Note: Don't Care state (X) on inputs is reflected in outputs
+ *       where appropriate.
+ */
+
+VECTORS:
+000001LH
+000111HH
+001001LH
+001111HH
+001110LH
+110011HH
+111010LH
+111110LL
+111101LL
+111111HL
+

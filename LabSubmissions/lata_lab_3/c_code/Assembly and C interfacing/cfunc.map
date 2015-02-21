@@ -1,0 +1,177 @@
+
+Hexadecimal
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+.  .ABS.                           0000   0000 =      0. bytes (ABS,OVR)
+
+      Value  Global
+   --------  --------------------------------
+     0000    l_HOME
+     0000    l_ISEG
+     0000    l_XINIT
+     0000    l_XISEG
+     0000    l_XSEG
+     0000    l__CODE
+     0000    s_BSEG
+     0000    s_CSEG
+     0000    s_XISEG
+     0000    s_XSEG
+     0000    s__CODE
+     0001    l_OSEG
+     0001    l_SSEG
+     0003    l_GSFINAL
+     000B    l_BSEG
+     0014    l_DSEG
+     0030    s_DSEG
+     003C    l_GSINIT
+     0044    s_OSEG
+     0045    s_SSEG
+     0080    s_ISEG
+     0854    l_CSEG
+     0854    s_GSINIT
+     0890    s_GSFINAL
+     0893    s_HOME
+     0893    s_XINIT
+
+Hexadecimal
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+_CODE                              0000   0000 =      0. bytes (REL,CON)
+
+Hexadecimal
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+DSEG                               0030   0014 =     20. bytes (REL,CON)
+
+      Value  Global
+   --------  --------------------------------
+     0030    _c_func_PARM_2
+     003C    _vsprintf_PARM_2
+     003F    _vsprintf_PARM_3
+     0040    _vsprintf_decimals_1_1
+     0041    _vsprintf_c_1_1
+     0042    _vprintf_PARM_2
+     0043    _bp
+
+Hexadecimal
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+OSEG                               0044   0001 =      1. bytes (REL,OVR)
+
+      Value  Global
+   --------  --------------------------------
+     0044    _asm_func_PARM_2
+
+Hexadecimal
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+SSEG                               0045   0001 =      1. bytes (REL,CON)
+
+Hexadecimal
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+ISEG                               0080   0000 =      0. bytes (REL,CON)
+
+Hexadecimal
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+BSEG                               0000   000B =     11. bytes (REL,CON,BIT)
+
+Hexadecimal
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+XSEG                               0000   0000 =      0. bytes (REL,CON,XDATA)
+
+Hexadecimal
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+XISEG                              0000   0000 =      0. bytes (REL,CON,XDATA)
+
+Hexadecimal
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+CSEG                               0000   0854 =   2132. bytes (REL,CON,CODE)
+
+      Value  Global
+   --------  --------------------------------
+  0C:0038    _abc
+  0C:0059    _c_func
+  0C:0060    _main
+  0C:0090    _getchar
+  0C:0099    _putchar
+  0C:00A3    _init
+  0C:00E0    _asm_func
+  0C:00F1    __sdcc_external_startup
+  0C:00F5    _printf
+  0C:011A    _sprintf
+  0C:0215    _vsprintf
+  0C:0779    _vprintf
+  0C:07A0    _isdigit
+  0C:07B6    __gptrput
+  0C:07EB    _islower
+  0C:0801    _strlen
+  0C:0829    __gptrget
+
+Hexadecimal
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+GSINIT                             0854   003C =     60. bytes (REL,CON,CODE)
+
+Hexadecimal
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+GSFINAL                            0890   0003 =      3. bytes (REL,CON,CODE)
+
+Hexadecimal
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+HOME                               0893   0000 =      0. bytes (REL,CON,CODE)
+
+Hexadecimal
+
+Area                               Addr   Size   Decimal Bytes (Attributes)
+--------------------------------   ----   ----   ------- ----- ------------
+XINIT                              0893   0000 =      0. bytes (REL,CON,CODE)
+ASxxxx Linker V01.70 + NoICE + SDCC Feb 1999,  page 1.
+
+Files Linked	  [ module(s) ]
+
+cfunc           	[    cfunc ]
+asmfunc.rel     	[          ]
+
+Libraries Linked		       [   object  file   ]
+
+C:\SDCC\share\sdcc\lib\small/libsdcc.lib    [         _startup ]
+C:\SDCC\share\sdcc\lib\small/libsdcc.lib    [     printf_large ]
+C:\SDCC\share\sdcc\lib\small/libsdcc.lib    [          vprintf ]
+C:\SDCC\share\sdcc\lib\small/libsdcc.lib    [         _isdigit ]
+C:\SDCC\share\sdcc\lib\small/libsdcc.lib    [         _gptrput ]
+C:\SDCC\share\sdcc\lib\small/libsdcc.lib    [         _islower ]
+C:\SDCC\share\sdcc\lib\small/libsdcc.lib    [              _bp ]
+C:\SDCC\share\sdcc\lib\small/libsdcc.lib    [          _strlen ]
+C:\SDCC\share\sdcc\lib\small/libsdcc.lib    [         _gptrget ]
+
+ASxxxx Linker V01.70 + NoICE + SDCC Feb 1999,  page 2.
+
+User Base Address Definitions
+
+CSEG = 0x0000
+DSEG = 0x0030
+XSEG = 0x0000
+ISEG = 0x0080
+BSEG = 0x0000
+
+

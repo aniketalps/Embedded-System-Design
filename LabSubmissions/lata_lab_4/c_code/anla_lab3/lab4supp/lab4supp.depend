@@ -1,0 +1,49 @@
+# depslib dependency file v1.0
+1416440736 source:c:\anla_lab3\lab4supp\main.c
+	<mcs51/8051.h>
+	<at89c51ed2.h>
+	<stdio.h>
+	<stdlib.h>
+	<mcs51/8052.h>
+	<string.h>
+	"lcd_display.h"
+	"serialinit.h"
+	"timer0.h"
+
+1416185700 c:\anla_lab3\lab4supp\lcd_display.h
+	<mcs51/8051.h>
+	<at89c51ed2.h>
+	<stdio.h>
+	<mcs51/8052.h>
+
+1415921700 c:\anla_lab3\lab4supp\serialinit.h
+
+1416423215 c:\anla_lab3\lab4supp\timer0.h
+	<string.h>
+
+1416434381 source:c:\anla_lab3\lab4supp\lcd_display.c
+	<mcs51/8051.h>
+	<at89c51ed2.h>
+	<stdio.h>
+	<mcs51/8052.h>
+	"lcd_display.h"
+
+1416268856 source:c:\anla_lab3\lab4supp\serialinit.c
+	<mcs51/8051.h>
+	<at89c51ed2.h>
+	<mcs51reg.h>
+	<stdio.h>
+	<string.h>
+	"serialinit.h"
+
+1416429966 source:c:\anla_lab3\lab4supp\timer0.c
+	<mcs51/8051.h>
+	<at89c51ed2.h>
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<math.h>
+	"timer0.h"
+	"lcd_display.h"
+	"serialinit.h"
+
